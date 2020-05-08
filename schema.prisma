@@ -32,9 +32,9 @@ model Researcher {
   nationality String
   image       String
   rol         Rol
-  phenomena   Phenomena[]
   updatedAt   DateTime    @updatedAt
   createdAt   DateTime    @default(now())
+  Phenomena   Phenomena[]
 }
 
 model Phenomena {

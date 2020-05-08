@@ -1,0 +1,56 @@
+enum Rol {
+  Admin
+  Researcher
+}
+
+type Researcher {
+  id: String!
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  age: Int!
+  nationality: String!
+  image: String!
+  rol: Rol!
+  updatedAt: Date!
+  createdAt: Date!
+}
+
+type Query {
+  researchers: [Researcher!]!
+  researcher(id: String!): Researcher
+}
+
+input UpdateResearcherDto {
+  researcherId: String!
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  age: Int
+  nationality: String
+  image: String
+  rol: Rol
+}
+
+input CreateResearcherDto {
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  age: Int!
+  nationality: String!
+  image: String!
+  rol: Rol!
+}
+
+input DeleteReseacherDto {
+  researcherId: String!
+}
+
+type Mutation {
+  createResearcher(dto: CreateResearcherDto!): Researcher
+  deleteResearcher(dto: DeleteReseacherDto!): Boolean
+  updateResearcher(dto: UpdateResearcherDto!): Researcher
+}
