@@ -1,0 +1,125 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Researcher",
+      "field": "phenomena",
+      "type": "Phenomena",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Phenomena",
+      "field": "researcher",
+      "type": "Researcher",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Phenomena",
+          "field": "researcher"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Phenomena",
+          "field": "researcher"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[researcherId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Phenomena",
+          "field": "researcher"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Phenomena",
+      "field": "researcherId",
+      "type": "String",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Phenomena",
+      "field": "ocurrences",
+      "type": "Ocurrence",
+      "arity": "List"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Ocurrence",
+      "field": "phenomena",
+      "type": "Phenomena",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "Ocurrence",
+          "field": "phenomena"
+        },
+        "directive": "relation"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Ocurrence",
+          "field": "phenomena"
+        },
+        "directive": "relation"
+      },
+      "argument": "fields",
+      "value": "[phenomenaId]"
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "Ocurrence",
+          "field": "phenomena"
+        },
+        "directive": "relation"
+      },
+      "argument": "references",
+      "value": "[id]"
+    },
+    {
+      "tag": "CreateField",
+      "model": "Ocurrence",
+      "field": "phenomenaId",
+      "type": "String",
+      "arity": "Required"
+    }
+  ]
+}
