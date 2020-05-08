@@ -1,7 +1,13 @@
-import { Resolver, Args, Mutation } from '@nestjs/graphql';
+import {
+  Resolver,
+  Args,
+  Mutation,
+  Query,
+  ResolveField,
+  Parent,
+} from '@nestjs/graphql';
 import { PrismaService } from '../prisma/prisma.service';
-import { Query } from '@nestjs/graphql';
-import { Researcher } from '@prisma/client';
+import { Researcher, Phenomena } from '@prisma/client';
 import {
   CreateResearcherDto,
   DeleteReseacherDto,
@@ -11,6 +17,16 @@ import {
 @Resolver('Researcher')
 export class ResearcherResolver {
   constructor(private readonly prisma: PrismaService) {}
+
+  @ResolveField('phenomena')
+  public async phenomena(
+    @Parent() researcher: Researcher,
+  ): Promise<Phenomena[]> {
+    const { id } = researcher;
+    return this.prisma.phenomena.findMany({
+      where: { researcherId: id },
+    });
+  }
 
   @Query('researchers')
   public async researchers(): Promise<Researcher[]> {

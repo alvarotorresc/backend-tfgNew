@@ -3,6 +3,7 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule } from '@nestjs/config';
 import { resolve } from 'path';
 import { ResearcherModule } from './researcher/researcher.module';
+import { PhenomenaModule } from './phenomena/phenomena.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { ResearcherModule } from './researcher/researcher.module';
       fieldResolverEnhancers: ['guards'],
     }),
     ResearcherModule,
+    PhenomenaModule,
   ],
 })
 export class AppModule {}

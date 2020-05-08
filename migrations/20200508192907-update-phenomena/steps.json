@@ -1,0 +1,17 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "CreateField",
+      "model": "Researcher",
+      "field": "Phenomena",
+      "type": "Phenomena",
+      "arity": "List"
+    },
+    {
+      "tag": "DeleteField",
+      "model": "Researcher",
+      "field": "phenomena"
+    }
+  ]
+}

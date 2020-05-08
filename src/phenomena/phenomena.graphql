@@ -1,0 +1,49 @@
+enum Types {
+  APPARITION
+  PSYCHOPHONY
+  HAUNTED_HOUSE
+  REINCARNATION
+  TELEPATHY
+  TELEKINESIS
+  UFOLOGY
+}
+
+type Phenomena {
+  id: String!
+  title: String!
+  description: String!
+  type: Types!
+  researcher: Researcher!
+  researcherId: String!
+  updatedAt: Date!
+  createdAt: Date!
+}
+
+type Query {
+  getPhenomena: [Phenomena!]!
+  getPhenomenon(id: String!): Phenomena
+}
+
+input UpdatePhenomenonDto {
+  phenomenonId: String!
+  title: String
+  description: String
+  type: Types
+}
+
+input CreatePhenomenonDto {
+  researcherId: String!
+  title: String!
+  description: String!
+  type: Types!
+}
+
+input DeletePhenomenonDto {
+  phenomenonId: String!
+}
+
+type Mutation {
+  createPhenomenon(dto: CreatePhenomenonDto!): Phenomena
+  updatePhenomenon(dto: UpdatePhenomenonDto!): Phenomena
+  deletePhenomenon(dto: DeletePhenomenonDto!): Boolean
+}

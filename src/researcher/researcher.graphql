@@ -13,6 +13,7 @@ type Researcher {
   nationality: String!
   image: String!
   rol: Rol!
+  phenomena: [Phenomena!]!
   updatedAt: Date!
   createdAt: Date!
 }
