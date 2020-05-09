@@ -5,6 +5,7 @@ import { resolve } from 'path';
 import { ResearcherModule } from './researcher/researcher.module';
 import { PhenomenaModule } from './phenomena/phenomena.module';
 import { OcurrencesModule } from './ocurrences/ocurrences.module';
+import { AuthModule } from './auth/auth.module';
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { OcurrencesModule } from './ocurrences/ocurrences.module';
     ResearcherModule,
     PhenomenaModule,
     OcurrencesModule,
+    AuthModule,
   ],
 })
 export class AppModule {}
