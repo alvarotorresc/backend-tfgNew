@@ -37,4 +37,14 @@ export class AuthResolver {
 
     return result;
   }
+
+  @Mutation('logout')
+  @Roles('admin', 'researcher')
+  public async logout(@Context() context: GraphQLContext): Promise<boolean> {
+    await this.authService.logout(
+      context.req.headers.authorization.split(' ')[1],
+    );
+
+    return true;
+  }
 }

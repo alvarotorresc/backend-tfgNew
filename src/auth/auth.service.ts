@@ -44,6 +44,21 @@ export class AuthService {
     return this.createAuthLoginResponse(researcher);
   }
 
+  public async logout(token: string): Promise<void> {
+    await this.disableToken(token);
+  }
+
+  private async disableToken(token: string): Promise<void> {
+    const { exp } = jwt.decode(token, { json: true }) as { exp: number };
+
+    await this.prisma.disabledToken.create({
+      data: {
+        token,
+        expiresAt: new Date(exp * 1000),
+      },
+    });
+  }
+
   public hashPassword(password: string): Promise<string> {
     return bcrypt.hash(password, 10);
   }
