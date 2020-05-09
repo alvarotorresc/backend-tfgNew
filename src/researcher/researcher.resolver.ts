@@ -13,10 +13,12 @@ import {
   DeleteReseacherDto,
   UpdateResearcherDto,
 } from '../graphql.types';
+import { AuthService } from '@/auth/auth.service';
 
 @Resolver('Researcher')
 export class ResearcherResolver {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService,
+    private readonly authService: AuthService,) { }
 
   @ResolveField('phenomena')
   public async phenomena(
@@ -55,12 +57,14 @@ export class ResearcherResolver {
       rol,
     } = dto;
 
+    const hash = await this.authService.hashPassword(password);
+
     return this.prisma.researcher.create({
       data: {
         firstName,
         lastName,
         email,
-        password,
+        password: hash,
         image,
         age,
         rol,
