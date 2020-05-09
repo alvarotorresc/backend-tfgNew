@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 enum Rol {
@@ -46,7 +46,7 @@ model Phenomena {
   createdAt    DateTime    @default(now())
   researcher   Researcher  @relation(fields: [researcherId], references: [id])
   researcherId String
-  ocurrence    Ocurrence[]
+  ocurrences   Ocurrence[]
 }
 
 model Ocurrence {

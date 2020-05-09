@@ -2,7 +2,9 @@ import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { ConfigModule } from '@nestjs/config';
 import { resolve } from 'path';
-import { ExampleModule } from './example/example.module';
+import { ResearcherModule } from './researcher/researcher.module';
+import { PhenomenaModule } from './phenomena/phenomena.module';
+import { OcurrencesModule } from './ocurrences/ocurrences.module';
 
 @Module({
   imports: [
@@ -17,7 +19,9 @@ import { ExampleModule } from './example/example.module';
       context: (req) => ({ req, __gqlContext: true }),
       fieldResolverEnhancers: ['guards'],
     }),
-    ExampleModule,
+    ResearcherModule,
+    PhenomenaModule,
+    OcurrencesModule,
   ],
 })
 export class AppModule {}
