@@ -3,15 +3,46 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { ConfigService } from '@nestjs/config';
 import { PrismaService } from '@/prisma/prisma.service';
-import { AuthTokenPayload, TokenPayload } from './token.model';
-import { DisabledToken } from '@prisma/client';
+import {
+  AuthTokenPayload,
+  TokenPayload,
+  ResearcherTokenPayload,
+} from './token.model';
+import { DisabledToken, Researcher } from '@prisma/client';
+import { AuthLoginResponseDto } from '@/graphql.types';
+import { ResearcherService } from '../researcher/researcher.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private readonly config: ConfigService,
     private readonly prisma: PrismaService,
+    private readonly researcherService: ResearcherService,
   ) {}
+
+  public async login(
+    email: string,
+    password: string,
+  ): Promise<AuthLoginResponseDto | false> {
+    const researcher = await this.researcherService.findResearcherByEmail(
+      email,
+    );
+
+    if (!researcher) {
+      return false;
+    }
+
+    const passwordMatches = await this.comparePassword(
+      password,
+      researcher.password,
+    );
+
+    if (!passwordMatches) {
+      return false;
+    }
+
+    return this.createAuthLoginResponse(researcher);
+  }
 
   public hashPassword(password: string): Promise<string> {
     return bcrypt.hash(password, 10);
@@ -87,5 +118,39 @@ export class AuthService {
     }
 
     return false;
+  }
+
+  private async comparePassword(
+    password: string,
+    passwordHash: string | null,
+  ): Promise<boolean> {
+    if (passwordHash) {
+      return bcrypt.compare(password, passwordHash);
+    }
+    return false;
+  }
+
+  private createAuthLoginResponse(
+    researcher: Researcher,
+  ): AuthLoginResponseDto {
+    const payload: ResearcherTokenPayload = {
+      type: 'researcher',
+      researcherId: researcher.id,
+    };
+
+    const accessToken = this.createToken(payload, {
+      expiresIn: '7d',
+    });
+
+    return {
+      researcherId: researcher.id,
+      accessToken,
+    };
+  }
+
+  public createToken(payload: TokenPayload, options?: jwt.SignOptions): string {
+    const secret = this.config.get<string>('JWT_SECRET', 'default-secret');
+
+    return jwt.sign(payload, secret, options);
   }
 }
