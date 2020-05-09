@@ -4,6 +4,7 @@ import { ConfigModule } from '@nestjs/config';
 import { resolve } from 'path';
 import { ResearcherModule } from './researcher/researcher.module';
 import { PhenomenaModule } from './phenomena/phenomena.module';
+import { OcurrencesModule } from './ocurrences/ocurrences.module';
 
 @Module({
   imports: [
@@ -20,6 +21,7 @@ import { PhenomenaModule } from './phenomena/phenomena.module';
     }),
     ResearcherModule,
     PhenomenaModule,
+    OcurrencesModule,
   ],
 })
 export class AppModule {}

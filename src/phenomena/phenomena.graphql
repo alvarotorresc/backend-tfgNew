@@ -15,6 +15,7 @@ type Phenomena {
   type: Types!
   researcher: Researcher!
   researcherId: String!
+  ocurrences: [Ocurrence!]!
   updatedAt: Date!
   createdAt: Date!
 }

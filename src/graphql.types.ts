@@ -20,6 +20,14 @@ export enum Types {
     UFOLOGY = "UFOLOGY"
 }
 
+export interface CreateOcurrenceDto {
+    phenomenaId: string;
+    date: Date;
+    description: string;
+    witness: boolean;
+    resolved: boolean;
+}
+
 export interface CreatePhenomenonDto {
     researcherId: string;
     title: string;
@@ -38,12 +46,24 @@ export interface CreateResearcherDto {
     rol: Rol;
 }
 
+export interface DeleteOcurrenceDto {
+    ocurrenceId: string;
+}
+
 export interface DeletePhenomenonDto {
     phenomenonId: string;
 }
 
 export interface DeleteReseacherDto {
     researcherId: string;
+}
+
+export interface UpdateOcurrenceDto {
+    ocurrenceId: string;
+    date?: Date;
+    description?: string;
+    witness?: boolean;
+    resolved?: boolean;
 }
 
 export interface UpdatePhenomenonDto {
@@ -66,12 +86,27 @@ export interface UpdateResearcherDto {
 }
 
 export interface IMutation {
+    createOcurrence(dto: CreateOcurrenceDto): Ocurrence | Promise<Ocurrence>;
+    updateOcurrence(dto: UpdateOcurrenceDto): Ocurrence | Promise<Ocurrence>;
+    deleteOcurrence(dto: DeleteOcurrenceDto): boolean | Promise<boolean>;
     createPhenomenon(dto: CreatePhenomenonDto): Phenomena | Promise<Phenomena>;
     updatePhenomenon(dto: UpdatePhenomenonDto): Phenomena | Promise<Phenomena>;
     deletePhenomenon(dto: DeletePhenomenonDto): boolean | Promise<boolean>;
     createResearcher(dto: CreateResearcherDto): Researcher | Promise<Researcher>;
     deleteResearcher(dto: DeleteReseacherDto): boolean | Promise<boolean>;
     updateResearcher(dto: UpdateResearcherDto): Researcher | Promise<Researcher>;
+}
+
+export interface Ocurrence {
+    id: string;
+    date: Date;
+    description: string;
+    witness: boolean;
+    resolved: boolean;
+    phenomena: Phenomena;
+    phenomenaId: string;
+    updatedAt: Date;
+    createdAt: Date;
 }
 
 export interface Phenomena {
@@ -81,11 +116,14 @@ export interface Phenomena {
     type: Types;
     researcher: Researcher;
     researcherId: string;
+    ocurrences: Ocurrence[];
     updatedAt: Date;
     createdAt: Date;
 }
 
 export interface IQuery {
+    getOcurrences(): Ocurrence[] | Promise<Ocurrence[]>;
+    getOcurrence(id: string): Ocurrence | Promise<Ocurrence>;
     getPhenomena(): Phenomena[] | Promise<Phenomena[]>;
     getPhenomenon(id: string): Phenomena | Promise<Phenomena>;
     researchers(): Researcher[] | Promise<Researcher[]>;

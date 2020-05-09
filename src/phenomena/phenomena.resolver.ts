@@ -7,7 +7,7 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { PrismaService } from '../prisma/prisma.service';
-import { Phenomena, Researcher } from '@prisma/client';
+import { Phenomena, Researcher, Ocurrence } from '@prisma/client';
 import {
   DeletePhenomenonDto,
   UpdatePhenomenonDto,
@@ -17,6 +17,26 @@ import {
 @Resolver('Phenomena')
 export class PhenomenaResolver {
   constructor(private readonly prisma: PrismaService) {}
+
+  @ResolveField('researcher')
+  public async researcher(
+    @Parent() phenomena: Phenomena,
+  ): Promise<Researcher | null> {
+    const { researcherId } = phenomena;
+    return this.prisma.researcher.findOne({
+      where: { id: researcherId },
+    });
+  }
+
+  @ResolveField('ocurrences')
+  public async ocurrences(
+    @Parent() phenomena: Phenomena,
+  ): Promise<Ocurrence[]> {
+    const { id } = phenomena;
+    return this.prisma.ocurrence.findMany({
+      where: { phenomenaId: id },
+    });
+  }
 
   @Query('getPhenomena')
   public async getPhenomena(): Promise<Phenomena[]> {
@@ -76,16 +96,6 @@ export class PhenomenaResolver {
         id: phenomenonId,
       },
       data: partial,
-    });
-  }
-
-  @ResolveField('researcher')
-  public async researcher(
-    @Parent() phenomena: Phenomena,
-  ): Promise<Researcher | null> {
-    const { researcherId } = phenomena;
-    return this.prisma.researcher.findOne({
-      where: { id: researcherId },
     });
   }
 }

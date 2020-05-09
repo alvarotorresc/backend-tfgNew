@@ -1,0 +1,42 @@
+type Ocurrence {
+  id: String!
+  date: Date!
+  description: String!
+  witness: Boolean!
+  resolved: Boolean!
+  phenomena: Phenomena!
+  phenomenaId: String!
+  updatedAt: Date!
+  createdAt: Date!
+}
+
+type Query {
+  getOcurrences: [Ocurrence!]!
+  getOcurrence(id: String!): Ocurrence
+}
+
+input UpdateOcurrenceDto {
+  ocurrenceId: String!
+  date: Date
+  description: String
+  witness: Boolean
+  resolved: Boolean
+}
+
+input CreateOcurrenceDto {
+  phenomenaId: String!
+  date: Date!
+  description: String!
+  witness: Boolean!
+  resolved: Boolean!
+}
+
+input DeleteOcurrenceDto {
+  ocurrenceId: String!
+}
+
+type Mutation {
+  createOcurrence(dto: CreateOcurrenceDto!): Ocurrence
+  updateOcurrence(dto: UpdateOcurrenceDto!): Ocurrence
+  deleteOcurrence(dto: DeleteOcurrenceDto!): Boolean
+}
