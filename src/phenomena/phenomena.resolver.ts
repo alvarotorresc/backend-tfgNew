@@ -8,13 +8,17 @@ import {
 } from '@nestjs/graphql';
 import { PrismaService } from '../prisma/prisma.service';
 import { Phenomena, Researcher, Ocurrence } from '@prisma/client';
+import { AuthGuard } from '../auth/auth.guard';
+import { UseGuards } from '@nestjs/common';
 import {
   DeletePhenomenonDto,
   UpdatePhenomenonDto,
   CreatePhenomenonDto,
 } from '../graphql.types';
+import { Roles } from '@/auth/roles.decorator';
 
 @Resolver('Phenomena')
+@UseGuards(AuthGuard)
 export class PhenomenaResolver {
   constructor(private readonly prisma: PrismaService) {}
 
@@ -39,11 +43,13 @@ export class PhenomenaResolver {
   }
 
   @Query('getPhenomena')
+  @Roles('unauthenticated', 'researcher', 'admin')
   public async getPhenomena(): Promise<Phenomena[]> {
     return await this.prisma.phenomena.findMany();
   }
 
   @Query('getPhenomenon')
+  @Roles('unauthenticated', 'researcher', 'admin')
   public async getPhenomenon(
     @Args('id') id: string,
   ): Promise<Phenomena | null> {
@@ -53,6 +59,7 @@ export class PhenomenaResolver {
   }
 
   @Mutation('createPhenomenon')
+  @Roles('researcher')
   public async createPhenomenon(
     @Args('dto') dto: CreatePhenomenonDto,
   ): Promise<Phenomena | null> {
@@ -73,6 +80,7 @@ export class PhenomenaResolver {
   }
 
   @Mutation('deletePhenomenon')
+  @Roles('researcher')
   public async deletePhenomenon(
     @Args('dto') dto: DeletePhenomenonDto,
   ): Promise<boolean> {
@@ -86,6 +94,7 @@ export class PhenomenaResolver {
   }
 
   @Mutation('updatePhenomenon')
+  @Roles('researcher')
   public async updatePhenomenon(
     @Args('dto') dto: UpdatePhenomenonDto,
   ): Promise<Phenomena | null> {
