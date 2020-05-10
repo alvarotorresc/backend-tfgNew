@@ -14,11 +14,17 @@ import {
   UpdateResearcherDto,
 } from '../graphql.types';
 import { AuthService } from '@/auth/auth.service';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '../auth/auth.guard';
+import { Roles } from '@/auth/roles.decorator';
 
 @Resolver('Researcher')
+@UseGuards(AuthGuard)
 export class ResearcherResolver {
-  constructor(private readonly prisma: PrismaService,
-    private readonly authService: AuthService,) { }
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly authService: AuthService,
+  ) {}
 
   @ResolveField('phenomena')
   public async phenomena(
@@ -31,11 +37,13 @@ export class ResearcherResolver {
   }
 
   @Query('researchers')
+  @Roles('unauthenticated', 'researcher', 'admin')
   public async researchers(): Promise<Researcher[]> {
     return await this.prisma.researcher.findMany();
   }
 
   @Query('researcher')
+  @Roles('unauthenticated', 'researcher', 'admin')
   public async researcher(@Args('id') id: string): Promise<Researcher | null> {
     return await this.prisma.researcher.findOne({
       where: { id: id },
@@ -43,6 +51,7 @@ export class ResearcherResolver {
   }
 
   @Mutation('createResearcher')
+  @Roles('researcher') //FIX: role admin
   public async createResearcher(
     @Args('dto') dto: CreateResearcherDto,
   ): Promise<Researcher | null> {
@@ -74,6 +83,7 @@ export class ResearcherResolver {
   }
 
   @Mutation('deleteResearcher')
+  @Roles('researcher') //FIX: role admin
   public async deleteResearcher(
     @Args('dto') dto: DeleteReseacherDto,
   ): Promise<boolean> {
@@ -87,6 +97,7 @@ export class ResearcherResolver {
   }
 
   @Mutation('updateResearcher')
+  @Roles('researcher') //FIX: role admin
   public async updateResearcher(
     @Args('dto') dto: UpdateResearcherDto,
   ): Promise<Researcher | null> {
