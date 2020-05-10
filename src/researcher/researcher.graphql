@@ -1,6 +1,6 @@
 enum Rol {
-  Admin
-  Researcher
+  admin
+  researcher
 }
 
 type Researcher {

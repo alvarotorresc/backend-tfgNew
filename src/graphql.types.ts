@@ -6,8 +6,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export enum Rol {
-    Admin = "Admin",
-    Researcher = "Researcher"
+    admin = "admin",
+    researcher = "researcher"
 }
 
 export enum Types {
