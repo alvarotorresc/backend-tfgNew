@@ -1,13 +1,8 @@
 export type ResearcherTokenPayload = {
-  type: 'researcher';
+  type: 'researcher' | 'admin';
   researcherId: string;
 };
 
-export type AdminTokenPayload = {
-  type: 'admin';
-  researcherId: string;
-};
+export type TokenPayload = ResearcherTokenPayload;
 
-export type TokenPayload = ResearcherTokenPayload | AdminTokenPayload;
-
-export type AuthTokenPayload = ResearcherTokenPayload | AdminTokenPayload;
+export type AuthTokenPayload = ResearcherTokenPayload;

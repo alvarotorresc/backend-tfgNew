@@ -149,13 +149,15 @@ export class AuthService {
     researcher: Researcher,
   ): AuthLoginResponseDto {
     const payload: ResearcherTokenPayload = {
-      type: 'researcher',
+      type: researcher.rol,
       researcherId: researcher.id,
     };
 
     const accessToken = this.createToken(payload, {
       expiresIn: '7d',
     });
+
+    console.log(payload.type);
 
     return {
       researcherId: researcher.id,
