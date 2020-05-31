@@ -6,8 +6,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export enum Rol {
-    Admin = "Admin",
-    Researcher = "Researcher"
+    admin = "admin",
+    researcher = "researcher"
 }
 
 export enum Types {
@@ -18,6 +18,11 @@ export enum Types {
     TELEPATHY = "TELEPATHY",
     TELEKINESIS = "TELEKINESIS",
     UFOLOGY = "UFOLOGY"
+}
+
+export interface AuthLoginDto {
+    email: string;
+    password: string;
 }
 
 export interface CreateOcurrenceDto {
@@ -85,7 +90,15 @@ export interface UpdateResearcherDto {
     rol?: Rol;
 }
 
+export interface AuthLoginResponseDto {
+    accessToken: string;
+    researcherId: string;
+    type: string;
+}
+
 export interface IMutation {
+    login(loginDto?: AuthLoginDto): AuthLoginResponseDto | Promise<AuthLoginResponseDto>;
+    logout(): boolean | Promise<boolean>;
     createOcurrence(dto: CreateOcurrenceDto): Ocurrence | Promise<Ocurrence>;
     updateOcurrence(dto: UpdateOcurrenceDto): Ocurrence | Promise<Ocurrence>;
     deleteOcurrence(dto: DeleteOcurrenceDto): boolean | Promise<boolean>;
@@ -122,6 +135,7 @@ export interface Phenomena {
 }
 
 export interface IQuery {
+    loggedIn(): boolean | Promise<boolean>;
     getOcurrences(): Ocurrence[] | Promise<Ocurrence[]>;
     getOcurrence(id: string): Ocurrence | Promise<Ocurrence>;
     getPhenomena(): Phenomena[] | Promise<Phenomena[]>;

@@ -1,0 +1,23 @@
+type AuthLoginResponseDto {
+  accessToken: String!
+  researcherId: String!
+  type: String!
+}
+
+type Query {
+  loggedIn: Boolean!
+}
+
+input AuthLoginDto {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  login(loginDto: AuthLoginDto): AuthLoginResponseDto
+
+  """
+  Disables the access token in use
+  """
+  logout: Boolean
+}

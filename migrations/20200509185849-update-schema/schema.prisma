@@ -4,7 +4,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 model DisabledToken {
@@ -13,8 +13,8 @@ model DisabledToken {
 }
 
 enum Rol {
-  admin
-  researcher
+  Admin
+  Researcher
 }
 
 enum Types {

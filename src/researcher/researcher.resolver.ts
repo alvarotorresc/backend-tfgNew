@@ -13,10 +13,20 @@ import {
   DeleteReseacherDto,
   UpdateResearcherDto,
 } from '../graphql.types';
+import { AuthService } from '@/auth/auth.service';
+import { UseGuards } from '@nestjs/common';
+import { AuthGuard } from '../auth/auth.guard';
+import { Roles } from '@/auth/roles.decorator';
+import { ResearcherService } from './researcher.service';
 
 @Resolver('Researcher')
+@UseGuards(AuthGuard)
 export class ResearcherResolver {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly authService: AuthService,
+    private readonly researcherService: ResearcherService,
+  ) {}
 
   @ResolveField('phenomena')
   public async phenomena(
@@ -29,11 +39,13 @@ export class ResearcherResolver {
   }
 
   @Query('researchers')
+  @Roles('unauthenticated')
   public async researchers(): Promise<Researcher[]> {
     return await this.prisma.researcher.findMany();
   }
 
   @Query('researcher')
+  @Roles('unauthenticated')
   public async researcher(@Args('id') id: string): Promise<Researcher | null> {
     return await this.prisma.researcher.findOne({
       where: { id: id },
@@ -41,6 +53,7 @@ export class ResearcherResolver {
   }
 
   @Mutation('createResearcher')
+  @Roles('admin') //FIX: role admin
   public async createResearcher(
     @Args('dto') dto: CreateResearcherDto,
   ): Promise<Researcher | null> {
@@ -55,12 +68,24 @@ export class ResearcherResolver {
       rol,
     } = dto;
 
+    const hash = await this.authService.hashPassword(password);
+
+    const existingResearcher = await this.researcherService.findResearcherByEmail(
+      email,
+    );
+
+    console.log(existingResearcher);
+
+    if (existingResearcher) {
+      throw new Error('existing_researcher');
+    }
+
     return this.prisma.researcher.create({
       data: {
         firstName,
         lastName,
         email,
-        password,
+        password: hash,
         image,
         age,
         rol,
@@ -70,6 +95,7 @@ export class ResearcherResolver {
   }
 
   @Mutation('deleteResearcher')
+  @Roles('admin') //FIX: role admin
   public async deleteResearcher(
     @Args('dto') dto: DeleteReseacherDto,
   ): Promise<boolean> {
@@ -83,6 +109,7 @@ export class ResearcherResolver {
   }
 
   @Mutation('updateResearcher')
+  @Roles('admin') //FIX: role admin
   public async updateResearcher(
     @Args('dto') dto: UpdateResearcherDto,
   ): Promise<Researcher | null> {
