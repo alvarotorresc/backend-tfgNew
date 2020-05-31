@@ -59,7 +59,7 @@ export class PhenomenaResolver {
   }
 
   @Mutation('createPhenomenon')
-  @Roles('researcher')
+  @Roles('unauthenticated', 'researcher', 'admin')
   public async createPhenomenon(
     @Args('dto') dto: CreatePhenomenonDto,
   ): Promise<Phenomena | null> {
@@ -80,7 +80,7 @@ export class PhenomenaResolver {
   }
 
   @Mutation('deletePhenomenon')
-  @Roles('researcher')
+  @Roles('unauthenticated', 'researcher', 'admin')
   public async deletePhenomenon(
     @Args('dto') dto: DeletePhenomenonDto,
   ): Promise<boolean> {
@@ -94,7 +94,7 @@ export class PhenomenaResolver {
   }
 
   @Mutation('updatePhenomenon')
-  @Roles('researcher')
+  @Roles('unauthenticated', 'researcher', 'admin')
   public async updatePhenomenon(
     @Args('dto') dto: UpdatePhenomenonDto,
   ): Promise<Phenomena | null> {

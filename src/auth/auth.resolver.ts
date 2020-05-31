@@ -35,6 +35,8 @@ export class AuthResolver {
       throw new Error('unknown_credentials');
     }
 
+    console.log(result);
+
     return result;
   }
 

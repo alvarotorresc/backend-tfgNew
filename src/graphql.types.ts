@@ -93,6 +93,7 @@ export interface UpdateResearcherDto {
 export interface AuthLoginResponseDto {
     accessToken: string;
     researcherId: string;
+    type: string;
 }
 
 export interface IMutation {

@@ -162,6 +162,7 @@ export class AuthService {
     return {
       researcherId: researcher.id,
       accessToken,
+      type: researcher.rol,
     };
   }
 

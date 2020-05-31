@@ -1,6 +1,7 @@
 type AuthLoginResponseDto {
   accessToken: String!
   researcherId: String!
+  type: String!
 }
 
 type Query {

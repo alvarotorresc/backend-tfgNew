@@ -37,13 +37,13 @@ export class ResearcherResolver {
   }
 
   @Query('researchers')
-  @Roles('unauthenticated', 'researcher', 'admin')
+  @Roles('unauthenticated')
   public async researchers(): Promise<Researcher[]> {
     return await this.prisma.researcher.findMany();
   }
 
   @Query('researcher')
-  @Roles('unauthenticated', 'researcher', 'admin')
+  @Roles('unauthenticated')
   public async researcher(@Args('id') id: string): Promise<Researcher | null> {
     return await this.prisma.researcher.findOne({
       where: { id: id },
@@ -83,7 +83,7 @@ export class ResearcherResolver {
   }
 
   @Mutation('deleteResearcher')
-  @Roles('researcher') //FIX: role admin
+  @Roles('admin') //FIX: role admin
   public async deleteResearcher(
     @Args('dto') dto: DeleteReseacherDto,
   ): Promise<boolean> {
@@ -97,7 +97,7 @@ export class ResearcherResolver {
   }
 
   @Mutation('updateResearcher')
-  @Roles('researcher') //FIX: role admin
+  @Roles('admin') //FIX: role admin
   public async updateResearcher(
     @Args('dto') dto: UpdateResearcherDto,
   ): Promise<Researcher | null> {
