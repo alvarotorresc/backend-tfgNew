@@ -8,4 +8,4 @@ import { AuthService } from '../auth/auth.service';
   imports: [PrismaModule],
   providers: [ResearcherResolver, ResearcherService, AuthService],
 })
-export class ResearcherModule { }
+export class ResearcherModule {}
