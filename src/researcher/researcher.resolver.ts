@@ -74,8 +74,6 @@ export class ResearcherResolver {
       email,
     );
 
-    console.log(existingResearcher);
-
     if (existingResearcher) {
       throw new Error('existing_researcher');
     }
@@ -113,13 +111,28 @@ export class ResearcherResolver {
   public async updateResearcher(
     @Args('dto') dto: UpdateResearcherDto,
   ): Promise<Researcher | null> {
-    const { researcherId, ...partial } = dto;
+    const { researcherId, email, ...partial } = dto;
+
+    if (email) {
+      const existingResearcher = await this.researcherService.findResearcherByEmail(
+        email,
+      );
+
+      if (existingResearcher) {
+        if (existingResearcher.id !== researcherId) {
+          throw new Error('existing_researcher');
+        }
+      }
+    }
 
     return await this.prisma.researcher.update({
       where: {
         id: researcherId,
       },
-      data: partial,
+      data: {
+        email,
+        ...partial,
+      },
     });
   }
 }
