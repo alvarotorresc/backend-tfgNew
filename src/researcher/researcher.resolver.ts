@@ -17,6 +17,7 @@ import { AuthService } from '@/auth/auth.service';
 import { UseGuards } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { Roles } from '@/auth/roles.decorator';
+import { ResearcherService } from './researcher.service';
 
 @Resolver('Researcher')
 @UseGuards(AuthGuard)
@@ -24,6 +25,7 @@ export class ResearcherResolver {
   constructor(
     private readonly prisma: PrismaService,
     private readonly authService: AuthService,
+    private readonly researcherService: ResearcherService,
   ) {}
 
   @ResolveField('phenomena')
@@ -67,6 +69,16 @@ export class ResearcherResolver {
     } = dto;
 
     const hash = await this.authService.hashPassword(password);
+
+    const existingResearcher = await this.researcherService.findResearcherByEmail(
+      email,
+    );
+
+    console.log(existingResearcher);
+
+    if (existingResearcher) {
+      throw new Error('existing_researcher');
+    }
 
     return this.prisma.researcher.create({
       data: {
