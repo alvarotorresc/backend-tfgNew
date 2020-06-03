@@ -86,7 +86,13 @@ export class PhenomenaResolver {
   ): Promise<boolean> {
     const { phenomenonId } = dto;
     try {
+      await this.prisma.ocurrence.deleteMany({
+        where: {
+          phenomenaId: phenomenonId,
+        },
+      });
       await this.prisma.phenomena.delete({ where: { id: phenomenonId } });
+
       return true;
     } catch {
       return false;

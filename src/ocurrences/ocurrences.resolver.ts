@@ -45,14 +45,11 @@ export class OcurrencesResolver {
   public async createOcurrence(
     @Args('dto') dto: CreateOcurrenceDto,
   ): Promise<Ocurrence | null> {
-    const { phenomenaId, date, description, witness, resolved } = dto;
+    const { phenomenaId, ...partial } = dto;
 
     return this.prisma.ocurrence.create({
       data: {
-        date,
-        description,
-        witness,
-        resolved,
+        ...partial,
         phenomena: {
           connect: {
             id: phenomenaId,

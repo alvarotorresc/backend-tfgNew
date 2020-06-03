@@ -53,7 +53,7 @@ export class ResearcherResolver {
   }
 
   @Mutation('createResearcher')
-  @Roles('admin') //FIX: role admin
+  @Roles('unauthenticated') //FIX: role admin
   public async createResearcher(
     @Args('dto') dto: CreateResearcherDto,
   ): Promise<Researcher | null> {

@@ -14,6 +14,7 @@
     "gql:typings": "tsnd -r @babel/register src/generate-typings.ts",
     "prisma": "prisma",
     "test": "jest",
+    "cli": "ts-node --files -r @babel/register src/cli.ts",
     "test:debug": "node --inspect ./node_modules/.bin/jest --watch --runInBand --testTimeout 999999",
     "heroku-postbuild": "yarn prisma migrate up --experimental && yarn prisma generate && yarn build",
     "postinstall": "yarn prisma generate"
