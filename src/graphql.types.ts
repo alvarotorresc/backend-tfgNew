@@ -31,6 +31,7 @@ export interface CreateOcurrenceDto {
     description: string;
     witness: boolean;
     resolved: boolean;
+    city: string;
 }
 
 export interface CreatePhenomenonDto {
@@ -69,6 +70,7 @@ export interface UpdateOcurrenceDto {
     description?: string;
     witness?: boolean;
     resolved?: boolean;
+    city?: string;
 }
 
 export interface UpdatePhenomenonDto {
@@ -116,6 +118,7 @@ export interface Ocurrence {
     description: string;
     witness: boolean;
     resolved: boolean;
+    city: string;
     phenomena: Phenomena;
     phenomenaId: string;
     updatedAt: Date;

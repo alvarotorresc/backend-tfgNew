@@ -4,6 +4,7 @@ type Ocurrence {
   description: String!
   witness: Boolean!
   resolved: Boolean!
+  city: String!
   phenomena: Phenomena!
   phenomenaId: String!
   updatedAt: Date!
@@ -21,6 +22,7 @@ input UpdateOcurrenceDto {
   description: String
   witness: Boolean
   resolved: Boolean
+  city: String
 }
 
 input CreateOcurrenceDto {
@@ -29,6 +31,7 @@ input CreateOcurrenceDto {
   description: String!
   witness: Boolean!
   resolved: Boolean!
+  city: String!
 }
 
 input DeleteOcurrenceDto {
