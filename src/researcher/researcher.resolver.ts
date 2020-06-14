@@ -7,26 +7,49 @@ import {
   Parent,
 } from '@nestjs/graphql';
 import { PrismaService } from '../prisma/prisma.service';
-import { Researcher, Phenomena } from '@prisma/client';
+import { Researcher, Phenomena, Rol } from '@prisma/client';
 import {
   CreateResearcherDto,
   DeleteReseacherDto,
   UpdateResearcherDto,
 } from '../graphql.types';
 import { AuthService } from '@/auth/auth.service';
-import { UseGuards } from '@nestjs/common';
+import { UseGuards, OnModuleInit } from '@nestjs/common';
 import { AuthGuard } from '../auth/auth.guard';
 import { Roles } from '@/auth/roles.decorator';
 import { ResearcherService } from './researcher.service';
 
 @Resolver('Researcher')
 @UseGuards(AuthGuard)
-export class ResearcherResolver {
+export class ResearcherResolver implements OnModuleInit {
   constructor(
     private readonly prisma: PrismaService,
     private readonly authService: AuthService,
     private readonly researcherService: ResearcherService,
   ) {}
+
+  async onModuleInit(): Promise<any> {
+    const researcher = await this.researcherService.findResearcherByEmail(
+      'alvarotorrescarrasco@gmail.com',
+    );
+
+    if (!researcher) {
+      await this.prisma.researcher.create({
+        data: {
+          email: 'alvarotorrescarrasco@gmail.com',
+          password: '123456',
+          firstName: 'Alvaro',
+          lastName: 'Torres',
+          age: 22,
+          nationality: 'Spanish',
+          rol: Rol.admin,
+          image: 'https://semantic-ui.com/images/avatar/large/steve.jpg',
+        },
+      });
+    }
+
+    return null;
+  }
 
   @ResolveField('phenomena')
   public async phenomena(
